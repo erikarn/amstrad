@@ -13,7 +13,8 @@ org $0000                         ;##LIT##
 include "Includes/JumpblockHigh.asm"
 include "Includes/JumpblockIndirections.asm"
 include "Includes/MemoryFirmware.asm"
-        ld      bc,$7f89          ;{{0000:01897f}}  select mode 1, disable upper rom, enable lower rom		
+;;        ld      bc,$7f89          ;{{0000:01897f}}  select mode 1, disable upper rom, enable lower rom
+        ld      bc,$7f8a         ;{{0000:01897f}}  select mode 2, disable upper rom, enable lower rom
         out     (c),c             ;{{0003:ed49}}  select mode and rom configuration
         jp      STARTUP_entry_point;{{0005:c39105}} 
 ;;+----------------------------------------------------------------
