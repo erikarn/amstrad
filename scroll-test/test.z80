@@ -1,0 +1,6 @@
+
+org $a000
+
+start:
+	ret
+
