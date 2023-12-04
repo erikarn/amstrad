@@ -132,7 +132,7 @@ _mc_start_program_1:              ;{{Addr=$061f Code Calls/jump count: 2 Data us
         ld      (hl),a            ;{{0641:77}} 
         ldir                      ;{{0642:edb0}} 
 
-        ld      bc,$7f8a          ;{{0644:01897f}}  select mode 2, lower rom on, upper rom off
+        ld      bc,$7f89          ;{{0644:01897f}}  select mode 1, lower rom on, upper rom off
         out     (c),c             ;{{0647:ed49}} 
 
         exx                       ;{{0649:d9}} 

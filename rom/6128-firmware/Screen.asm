@@ -8,7 +8,7 @@ SCR_INITIALISE:                   ;{{Addr=$0abf Code Calls/jump count: 1 Data us
         ld      a,$c0             ;{{0ac5:3ec0}} 
         ld      (screen_base_HB_),a;{{0ac7:32c6b7}} 
         call    SCR_RESET         ;{{0aca:cdd00a}} ; SCR RESET
-        jp      set_mode_1        ;{{0acd:c3120b}} 
+        jp      set_mode_2        ;{{0acd:c3120b}} 
 
 ;;===========================================================================
 ;; SCR RESET
@@ -61,9 +61,9 @@ SCR_GET_MODE:                     ;{{Addr=$0b0c Code Calls/jump count: 10 Data u
         ret                       ;{{0b11:c9}} 
 
 ;;==========================================================================
-;;set mode 1
-set_mode_1:                       ;{{Addr=$0b12 Code Calls/jump count: 1 Data use count: 0}}
-        ld      a,$01             ;{{0b12:3e01}} 
+;;set mode 2
+set_mode_2:                       ;{{Addr=$0b12 Code Calls/jump count: 1 Data use count: 0}}
+        ld      a,$02             ;{{0b12:3e01}} 
         call    set_mode_         ;{{0b14:cd310b}} 
 
 ;;===========================================================================
@@ -1380,9 +1380,9 @@ _scr_vertical_90:                 ;{{Addr=$1040 Code Calls/jump count: 1 Data us
 ;; 
 ;; There are two palettes here; so that flashing colours can be defined.
 default_colour_palette:           ;{{Addr=$1052 Data Calls/jump count: 0 Data use count: 2}}
-                                  
-        defb $04,$04,$0a,$13,$0c,$0b,$14,$15,$0d,$06,$1e,$1f,$07,$12,$19,$04,$17
-        defb $04,$04,$0a,$13,$0c,$0b,$14,$15,$0d,$06,$1e,$1f,$07,$12,$19,$0a,$07
+
+        defb $00,$04,$0a,$13,$0c,$0b,$14,$15,$0d,$06,$1e,$1f,$07,$12,$19,$04,$17
+        defb $00,$04,$0a,$13,$0c,$0b,$14,$15,$0d,$06,$1e,$1f,$07,$12,$19,$0a,$07
 
 
 
