@@ -10,6 +10,12 @@
 ; BASIC gets around it by always operating on floating point
 ; values in its operator stack, NOT in arbitrary RAM.
 
+;
+; So, this makes it hard to use this in a ROM as it's quite possible
+; that a caller will attempt to read some data from an expansion ROM,
+; which we can't easily do because it would be used by this particular
+; ROM.
+
 include "firmware-memory.z80"
 
 ;;=============================================================================
