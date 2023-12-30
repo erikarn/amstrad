@@ -22,11 +22,12 @@
 #define FILE_TYPE_BASIC 0
 #define FILE_TYPE_BINARY 2
 
-#define ARG_FILE_PATH 1
-#define ARG_FILE_TYPE 2
-#define ARG_FILE_START 3
-#define ARG_FILE_ENTRY 4
-#define ARG_NUMBER 5
+#define ARG_IN_FILE_PATH 1
+#define ARG_OUT_FILE_PATH 2
+#define ARG_FILE_TYPE 3
+#define ARG_FILE_START 4
+#define ARG_FILE_ENTRY 5
+#define ARG_NUMBER 6
 
 typedef struct PACKED {
     uint8_t user_number;
@@ -121,7 +122,7 @@ bool has_amsdos_header(const amsdos_file *file) {
 }
 
 void print_usage() {
-    printf("Usage: addamsdosheader <filename> <type> <start> <entry>\n");
+    printf("Usage: addamsdosheader <filename> <outputfile> <type> <start> <entry>\n");
     printf("- type: basic or binary\n");
     printf("- start: hexadecimal address at which the file will be loaded\n");
     printf("- entry: hexadecimal address of the entry point (binary)\n");
@@ -166,17 +167,17 @@ void init_header(amsdos_file *file, uint8_t type, uint16_t start, uint16_t entry
     file->header.checksum = compute_checksum(&file->header);
 }
 
-void write_file(const amsdos_file *amsfile) {
+void write_file(char *dst_file, const amsdos_file *amsfile) {
     FILE *file;
 
-    file = fopen(amsfile->filepath, "wb");
+    file = fopen(dst_file, "wb");
     fwrite(&amsfile->header, 1, sizeof(amsdos_header), file);
     fwrite(amsfile->content, amsfile->size, 1, file);
     fclose(file);
 }
 
 int main(int argc, char **argv) {
-    amsdos_file *file;
+    amsdos_file *in_file;
     uint8_t file_type;
     uint16_t start;
     uint16_t entry;
@@ -189,22 +190,22 @@ int main(int argc, char **argv) {
     }
 
     /* Analyze arguments */
-    file = load_file(argv[ARG_FILE_PATH]);
-    file_type = string2filetype(argv[ARG_FILE_TYPE]);    
+    in_file = load_file(argv[ARG_IN_FILE_PATH]);
+    file_type = string2filetype(argv[ARG_FILE_TYPE]);
     start = string2word(argv[ARG_FILE_START]);
     entry = string2word(argv[ARG_FILE_ENTRY]);
 
     /* Check for AMSDOS header presence */
-    if(has_amsdos_header(file)) {
+    if(has_amsdos_header(in_file)) {
         printf("File already has AMSDOS header\n");
         return ERROR_AMSDOS_HEADER_PRESENT;
     }
 
     /* Initialize the header */
-    init_header(file, file_type, start, entry);
-    
+    init_header(in_file, file_type, start, entry);
+
     /* Write file with the AMSDOS header */
-    write_file(file);
+    write_file(argv[ARG_OUT_FILE_PATH], in_file);
 
     return 0;
 }
