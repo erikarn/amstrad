@@ -21,7 +21,12 @@ _setup_kernel_jumpblocks_1:       ;{{Addr=$0047 Code Calls/jump count: 1 Data us
 
         ld      hl,START_OF_DATA_COPIED_TO_HI_JUMPBLOCK;{{0051:21a603}}  copy high kernel jumpblock ##LABEL## ##NOOFFSET##
         ld      de,KL_U_ROM_ENABLE;{{0054:1100b9}} 
-        ld      bc,$01e4          ;{{0057:01e401}} ##LIT##;WARNING: Code area used as literal
+
+	; This is the length of the code in HighJumpBlock.asm!
+	; TODO: once HighJumpBlock.asm is shrunk, adjust this constant
+	; accordingly!
+
+        ld      bc, CONST_HI_JUMP_BLOCK_SIZE ;{{0057:01e401}} ##LIT##;WARNING: Code area used as literal
         ldir                      ;{{005a:edb0}} 
 
 ;;==========================================================================

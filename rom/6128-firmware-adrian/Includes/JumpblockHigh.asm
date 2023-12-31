@@ -17,3 +17,6 @@ KL_LDIR              EQU $B91B
 KL_LDDR              EQU $B91E
 KL_POLL_SYNCHRONOUS  EQU $B921
 KL_SCAN_NEEDED       EQU $B92A
+
+; Size of the high jumpblock area in ROM to copy
+CONST_HI_JUMP_BLOCK_SIZE EQU $01E4

@@ -26,6 +26,7 @@ include "Kernel.asm"
 
 ;;<<<<<<<<<<<<<<<<<<<<<<<<<<<<END OF DATA COPIED TO HI JUMPBLOCK
 include "HighJumpblock.asm"
+
 include "Machine.asm"
 include "JumpRestore.asm"
 include "Screen.asm"
@@ -33,7 +34,8 @@ include "Text.asm"
 include "Graphics.asm"
 include "Keyboard.asm"
 include "Sound.asm"
-include "Cassette.asm"
+;;include "Cassette.asm"
+include "CassetteStubs.asm"
 include "LineEditor.asm"
 include "FPMaths.asm"
 include "Font.asm"
