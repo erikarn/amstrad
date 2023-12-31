@@ -2,46 +2,46 @@
 ;;============================================================================
 ;; CAS INITIALISE
 
-CAS_INITIALISE:                   ;{{Addr=$24bc Code Calls/jump count: 1 Data use count: 1}}
-        call    CAS_IN_ABANDON    ;{{24bc:cd5725}}  CAS IN ABANDON
-        call    CAS_OUT_ABANDON   ;{{24bf:cd9925}}  CAS OUT ABANDON
+EXP_CAS_INITIALISE:                   ;
+        call    EXP_CAS_IN_ABANDON    ;
+        call    EXP_CAS_OUT_ABANDON   ;
 
 ;; enable cassette messages
-        xor     a                 ;{{24c2:af}} 
-        call    CAS_NOISY         ;{{24c3:cde124}}  CAS NOISY
+        xor     a                 ;
+        call    EXP_CAS_NOISY     ;
 
 ;; stop cassette motor
-        call    CAS_STOP_MOTOR    ;{{24c6:cdbf2b}}  CAS STOP MOTOR
+        call    EXP_CAS_STOP_MOTOR    ;
 
 ;; set default speed for writing
         ld      hl,$014d          ;{{24c9:214d01}} ##LIT##;WARNING: Code area used as literal
-        ld      a,$19             ;{{24cc:3e19}} 
+        ld      a,$19             ;
 
 ;;============================================================================
 ;; CAS SET SPEED
 
-CAS_SET_SPEED:                    ;{{Addr=$24ce Code Calls/jump count: 0 Data use count: 1}}
-        add     hl,hl             ;{{24ce:29}}  x2
-        add     hl,hl             ;{{24cf:29}}  x4
-        add     hl,hl             ;{{24d0:29}}  x8
-        add     hl,hl             ;{{24d1:29}}  x32
-        add     hl,hl             ;{{24d2:29}}  x64
-        add     hl,hl             ;{{24d3:29}}  x128
-        rrca                      ;{{24d4:0f}} 
-        rrca                      ;{{24d5:0f}} 
-        and     $3f               ;{{24d6:e63f}} 
-        ld      l,a               ;{{24d8:6f}} 
-        ld      (cassette_precompensation_),hl;{{24d9:22e9b1}} 
-        ld      a,($b1e7)         ;{{24dc:3ae7b1}} 
-        scf                       ;{{24df:37}} 
-        ret                       ;{{24e0:c9}} 
+EXP_CAS_SET_SPEED:                ;
+        add     hl,hl             ; x2
+        add     hl,hl             ; x4
+        add     hl,hl             ; x8
+        add     hl,hl             ; x32
+        add     hl,hl             ; x64
+        add     hl,hl             ; x128
+        rrca                      ;
+        rrca                      ;
+        and     $3f               ;
+        ld      l,a               ;
+        ld      (cassette_precompensation_),hl
+        ld      a,($b1e7)         ;
+        scf                       ;
+        ret                       ;
 
 ;;============================================================================
 ;; CAS NOISY
 
-CAS_NOISY:                        ;{{Addr=$24e1 Code Calls/jump count: 2 Data use count: 1}}
-        ld      (cassette_handling_messages_flag_),a;{{24e1:3218b1}} 
-        ret                       ;{{24e4:c9}} 
+EXP_CAS_NOISY:                        ;
+        ld      (cassette_handling_messages_flag_),a;
+        ret                       ;
 
 ;;============================================================================
 ;; CAS IN OPEN
@@ -53,7 +53,7 @@ CAS_NOISY:                        ;{{Addr=$24e1 Code Calls/jump count: 2 Data us
 ;; NOTES:
 ;; - first block of file *must* be 2K long
 
-CAS_IN_OPEN:                      ;{{Addr=$24e5 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_IN_OPEN:                      ;{{Addr=$24e5 Code Calls/jump count: 0 Data use count: 1}}
         ld      ix,file_IN_flag_  ;{{24e5:dd211ab1}} ; input header
 
         call    _cas_out_open_1   ;{{24e9:cd0225}} ; initialise header
@@ -70,7 +70,7 @@ CAS_IN_OPEN:                      ;{{Addr=$24e5 Code Calls/jump count: 0 Data us
 ;;============================================================================
 ;; CAS OUT OPEN
 
-CAS_OUT_OPEN:                     ;{{Addr=$24fe Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_OUT_OPEN:                     ;{{Addr=$24fe Code Calls/jump count: 0 Data use count: 1}}
         ld      ix,file_OUT_flag_ ;{{24fe:dd215fb1}} 
 
 ;;----------------------------------------------------------------------------
@@ -164,7 +164,7 @@ _cas_out_open_49:                 ;{{Addr=$2543 Code Calls/jump count: 2 Data us
 ;;============================================================================
 ;; CAS IN CLOSE
 
-CAS_IN_CLOSE:                     ;{{Addr=$2550 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_IN_CLOSE:                     ;{{Addr=$2550 Code Calls/jump count: 0 Data use count: 1}}
         ld      a,(file_IN_flag_) ;{{2550:3a1ab1}}  get current read function
         or      a                 ;{{2553:b7}} 
         ld      a,$0e             ;{{2554:3e0e}} 
@@ -173,7 +173,7 @@ CAS_IN_CLOSE:                     ;{{Addr=$2550 Code Calls/jump count: 0 Data us
 ;;============================================================================
 ;; CAS IN ABANDON
 
-CAS_IN_ABANDON:                   ;{{Addr=$2557 Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_IN_ABANDON:                   ;{{Addr=$2557 Code Calls/jump count: 2 Data use count: 1}}
         ld      hl,file_IN_flag_  ;{{2557:211ab1}}  get current read function
         ld      b,$01             ;{{255a:0601}} 
 _cas_in_abandon_2:                ;{{Addr=$255c Code Calls/jump count: 1 Data use count: 0}}
@@ -214,10 +214,10 @@ cleanup_after_abandon:            ;{{Addr=$256d Code Calls/jump count: 2 Data us
 ;;============================================================================
 ;; CAS OUT CLOSE
 
-CAS_OUT_CLOSE:                    ;{{Addr=$257f Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_OUT_CLOSE:                    ;{{Addr=$257f Code Calls/jump count: 0 Data use count: 1}}
         ld      a,(file_OUT_flag_);{{257f:3a5fb1}} 
         cp      $03               ;{{2582:fe03}} 
-        jr      z,CAS_OUT_ABANDON ;{{2584:2813}}  (+&13)
+        jr      z,EXP_CAS_OUT_ABANDON ;{{2584:2813}}  (+&13)
         add     a,$ff             ;{{2586:c6ff}} 
         ld      a,$0e             ;{{2588:3e0e}} 
         ret     nc                ;{{258a:d0}} 
@@ -236,7 +236,7 @@ CAS_OUT_CLOSE:                    ;{{Addr=$257f Code Calls/jump count: 0 Data us
 ;;============================================================================
 ;; CAS OUT ABANDON
 
-CAS_OUT_ABANDON:                  ;{{Addr=$2599 Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_OUT_ABANDON:                  ;{{Addr=$2599 Code Calls/jump count: 2 Data use count: 1}}
         ld      hl,file_OUT_flag_ ;{{2599:215fb1}} 
         ld      b,$02             ;{{259c:0602}} 
         jr      _cas_in_abandon_2 ;{{259e:18bc}}  (-&44)
@@ -244,7 +244,7 @@ CAS_OUT_ABANDON:                  ;{{Addr=$2599 Code Calls/jump count: 2 Data us
 ;;============================================================================
 ;; CAS IN CHAR
 
-CAS_IN_CHAR:                      ;{{Addr=$25a0 Code Calls/jump count: 1 Data use count: 1}}
+EXP_CAS_IN_CHAR:                      ;{{Addr=$25a0 Code Calls/jump count: 1 Data use count: 1}}
         push    hl                ;{{25a0:e5}} 
         push    de                ;{{25a1:d5}} 
         push    bc                ;{{25a2:c5}} 
@@ -270,7 +270,7 @@ _cas_in_char_19:                  ;{{Addr=$25c4 Code Calls/jump count: 2 Data us
 ;;============================================================================
 ;; CAS OUT CHAR
 
-CAS_OUT_CHAR:                     ;{{Addr=$25c6 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_OUT_CHAR:                     ;{{Addr=$25c6 Code Calls/jump count: 0 Data use count: 1}}
         push    hl                ;{{25c6:e5}} 
         push    de                ;{{25c7:d5}} 
         push    bc                ;{{25c8:c5}} 
@@ -338,14 +338,14 @@ _attempt_to_set_cassette_input_function_1:;{{Addr=$25f9 Code Calls/jump count: 2
 ;;============================================================================
 ;; CAS TEST EOF
 
-CAS_TEST_EOF:                     ;{{Addr=$2603 Code Calls/jump count: 0 Data use count: 1}}
-        call    CAS_IN_CHAR       ;{{2603:cda025}} 
+EXP_CAS_TEST_EOF:                     ;{{Addr=$2603 Code Calls/jump count: 0 Data use count: 1}}
+        call    EXP_CAS_IN_CHAR       ;{{2603:cda025}} 
         ret     nc                ;{{2606:d0}} 
 
 ;;============================================================================
 ;; CAS RETURN
 
-CAS_RETURN:                       ;{{Addr=$2607 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_RETURN:                       ;{{Addr=$2607 Code Calls/jump count: 0 Data use count: 1}}
         push    hl                ;{{2607:e5}} 
         ld      hl,(length_of_this_block);{{2608:2a32b1}} 
         inc     hl                ;{{260b:23}} 
@@ -371,7 +371,7 @@ CAS_RETURN:                       ;{{Addr=$2607 Code Calls/jump count: 0 Data us
 ;; - block numbers are consecutive and increment
 ;; - first block number is *not* important; it can be any value!
 
-CAS_IN_DIRECT:                    ;{{Addr=$2618 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_IN_DIRECT:                    ;{{Addr=$2618 Code Calls/jump count: 0 Data use count: 1}}
         ex      de,hl             ;{{2618:eb}} 
         ld      b,$02             ;{{2619:0602}} ; IN direct
         call    attempt_to_set_cassette_input_function;{{261b:cdf625}} ; set cassette input function
@@ -426,7 +426,7 @@ transfer_loaded_block_to_destination_location:;{{Addr=$263c Code Calls/jump coun
 ;; BC = execution address
 ;; A = file type
 
-CAS_OUT_DIRECT:                   ;{{Addr=$2653 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_OUT_DIRECT:                   ;{{Addr=$2653 Code Calls/jump count: 0 Data use count: 1}}
         push    hl                ;{{2653:e5}} 
         push    bc                ;{{2654:c5}} 
         ld      c,a               ;{{2655:4f}} 
@@ -475,7 +475,7 @@ _cas_out_direct_28:               ;{{Addr=$268d Code Calls/jump count: 1 Data us
 ;;
 ;; DE = address of 2k buffer
 
-CAS_CATALOG:                      ;{{Addr=$2692 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_CATALOG:                      ;{{Addr=$2692 Code Calls/jump count: 0 Data use count: 1}}
         ld      hl,file_IN_flag_  ;{{2692:211ab1}} 
         ld      a,(hl)            ;{{2695:7e}} 
         or      a                 ;{{2696:b7}} 
@@ -486,12 +486,12 @@ CAS_CATALOG:                      ;{{Addr=$2692 Code Calls/jump count: 0 Data us
 
         ld      (address_of_2K_buffer_for_directories),de;{{269c:ed531bb1}}  buffer to load blocks to
         xor     a                 ;{{26a0:af}} 
-        call    CAS_NOISY         ;{{26a1:cde124}} ; CAS NOISY
+        call    EXP_CAS_NOISY         ;{{26a1:cde124}} ; CAS NOISY
 _cas_catalog_9:                   ;{{Addr=$26a4 Code Calls/jump count: 1 Data use count: 0}}
         call    _read_a_block_4   ;{{26a4:cdb326}}  read block
         jr      c,_cas_catalog_9  ;{{26a7:38fb}}  loop if cassette not pressed
 
-        jp      CAS_IN_ABANDON    ;{{26a9:c35725}} ; CAS IN ABANDON
+        jp      EXP_CAS_IN_ABANDON    ;{{26a9:c35725}} ; CAS IN ABANDON
 
 
 ;;=================================================================================
@@ -516,7 +516,7 @@ _read_a_block_7:                  ;{{Addr=$26bb Code Calls/jump count: 3 Data us
         ld      hl,used_to_construct_IN_Channel_header;{{26bb:21a4b1}}  location to load header
         ld      de,$0040          ;{{26be:114000}}  header length ##LIT##;WARNING: Code area used as literal
         ld      a,$2c             ;{{26c1:3e2c}}  header marker byte
-        call    CAS_READ          ;{{26c3:cda629}}  cas read: read header
+        call    EXP_CAS_READ          ;{{26c3:cda629}}  cas read: read header
         jr      nc,handle_read_error;{{26c6:3052}} 
 
         ld      b,$8b             ;{{26c8:068b}}  no message
@@ -556,7 +556,7 @@ _read_a_block_18:                 ;{{Addr=$26d6 Code Calls/jump count: 1 Data us
 
 _read_a_block_30:                 ;{{Addr=$26f5 Code Calls/jump count: 1 Data use count: 0}}
         ld      a,$16             ;{{26f5:3e16}}  data marker
-        call    CAS_READ          ;{{26f7:cda629}}  cas read: read data
+        call    EXP_CAS_READ          ;{{26f7:cda629}}  cas read: read data
 
         jr      nc,handle_read_error;{{26fa:301e}} 
 
@@ -719,7 +719,7 @@ abandon:                          ;{{Addr=$2778 Code Calls/jump count: 2 Data us
 _abandon_4:                       ;{{Addr=$277f Code Calls/jump count: 2 Data use count: 0}}
         sbc     a,a               ;{{277f:9f}} 
         push    af                ;{{2780:f5}} 
-        call    CAS_STOP_MOTOR    ;{{2781:cdbf2b}}  CAS STOP MOTOR
+        call    EXP_CAS_STOP_MOTOR    ;{{2781:cdbf2b}}  CAS STOP MOTOR
         pop     af                ;{{2784:f1}} 
         ret                       ;{{2785:c9}} 
 
@@ -746,7 +746,7 @@ _write_a_block_9:                 ;{{Addr=$279e Code Calls/jump count: 1 Data us
         ld      hl,OUT_Channel_Header_;{{27a8:2164b1}} 
         ld      de,$0040          ;{{27ab:114000}} ##LIT##;WARNING: Code area used as literal
         ld      a,$2c             ;{{27ae:3e2c}}  header marker
-        call    CAS_WRITE         ;{{27b0:cdaf29}}  cas write: write header
+        call    EXP_CAS_WRITE         ;{{27b0:cdaf29}}  cas write: write header
 
         pop     hl                ;{{27b3:e1}} 
         jr      nc,handle_write_error;{{27b4:3022}}  (+&22)
@@ -754,7 +754,7 @@ _write_a_block_9:                 ;{{Addr=$279e Code Calls/jump count: 1 Data us
 ;; write data for this block
         ld      de,(length_saved_so_far);{{27b6:ed5b77b1}} 
         ld      a,$16             ;{{27ba:3e16}}  data marker
-        call    CAS_WRITE         ;{{27bc:cdaf29}}  cas write: write data block
+        call    EXP_CAS_WRITE         ;{{27bc:cdaf29}}  cas write: write data block
         ld      hl,last_block_flag__B;{{27bf:2175b1}} 
         call    c,test_and_delay  ;{{27c2:dcfa27}} 
         jr      nc,handle_write_error;{{27c5:3011}}  (+&11)
@@ -803,7 +803,7 @@ wait_key_start_motor:             ;{{Addr=$27e5 Code Calls/jump count: 2 Data us
         sbc     a,a               ;{{27f3:9f}} 
         ret     nc                ;{{27f4:d0}} 
 
-        call    CAS_START_MOTOR   ;{{27f5:cdbb2b}}  CAS START MOTOR
+        call    EXP_CAS_START_MOTOR   ;{{27f5:cdbb2b}}  CAS START MOTOR
         sbc     a,a               ;{{27f8:9f}} 
         ret                       ;{{27f9:c9}} 
 
@@ -1226,7 +1226,7 @@ cassette_messages:                ;{{Addr=$2935 Data Calls/jump count: 0 Data us
 ;; HL = location of data
 ;; DE = length of data
 
-CAS_READ:                         ;{{Addr=$29a6 Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_READ:                         ;{{Addr=$29a6 Code Calls/jump count: 2 Data use count: 1}}
         call    enable_key_checking_and_start_the_cassette_motor;{{29a6:cde329}}  enable key checking and start the cassette motor
         push    af                ;{{29a9:f5}} 
         ld      hl,Read_block_of_data;{{29aa:21282a}}  read block of data ##LABEL##
@@ -1239,7 +1239,7 @@ CAS_READ:                         ;{{Addr=$29a6 Code Calls/jump count: 2 Data us
 ;; HL = destination location for data
 ;; DE = length of data
 
-CAS_WRITE:                        ;{{Addr=$29af Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_WRITE:                        ;{{Addr=$29af Code Calls/jump count: 2 Data use count: 1}}
         call    enable_key_checking_and_start_the_cassette_motor;{{29af:cde329}}  enable key checking and start the cassette motor
         push    af                ;{{29b2:f5}} 
         call    write_start_of_block;{{29b3:cdd42a}} ; write start of block (pilot and syncs)
@@ -1251,7 +1251,7 @@ CAS_WRITE:                        ;{{Addr=$29af Code Calls/jump count: 2 Data us
 ;;=========================================================================
 ;; CAS CHECK
 
-CAS_CHECK:                        ;{{Addr=$29c1 Code Calls/jump count: 0 Data use count: 1}}
+EXP_CAS_CHECK:                        ;{{Addr=$29c1 Code Calls/jump count: 0 Data use count: 1}}
         call    enable_key_checking_and_start_the_cassette_motor;{{29c1:cde329}}  enable key checking and start the cassette motor
         push    af                ;{{29c4:f5}} 
         ld      hl,check_stored_block_with_block_in_memory;{{29c5:21372a}} ; check stored block with block in memory ##LABEL##
@@ -1284,7 +1284,7 @@ _cas_check_7:                     ;{{Addr=$29d0 Code Calls/jump count: 1 Data us
         ei                        ;{{29dc:fb}} ; enable interrupts
 
         ld      a,d               ;{{29dd:7a}} 
-        call    CAS_RESTORE_MOTOR ;{{29de:cdc12b}} ; CAS RESTORE MOTOR
+        call    EXP_CAS_RESTORE_MOTOR ;{{29de:cdc12b}} ; CAS RESTORE MOTOR
         pop     af                ;{{29e1:f1}} 
         ret                       ;{{29e2:c9}} 
 
@@ -1304,7 +1304,7 @@ enable_key_checking_and_start_the_cassette_motor:;{{Addr=$29e3 Code Calls/jump c
         pop     de                ;{{29ed:d1}} 
         pop     ix                ;{{29ee:dde1}} 
 
-        call    CAS_START_MOTOR   ;{{29f0:cdbb2b}}  CAS START MOTOR
+        call    EXP_CAS_START_MOTOR   ;{{29f0:cdbb2b}}  CAS START MOTOR
 
 
         di                        ;{{29f3:f3}} ; disable interrupts
@@ -1931,14 +1931,14 @@ _write_level_to_cassette_6:       ;{{Addr=$2bb1 Code Calls/jump count: 1 Data us
 ;;
 ;; start cassette motor (if cassette motor was previously off
 ;; allow to to achieve full rotational speed)
-CAS_START_MOTOR:                  ;{{Addr=$2bbb Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_START_MOTOR:                  ;{{Addr=$2bbb Code Calls/jump count: 2 Data use count: 1}}
         ld      a,$10             ;{{2bbb:3e10}}  start cassette motor
-        jr      CAS_RESTORE_MOTOR ;{{2bbd:1802}}  CAS RESTORE MOTOR 
+        jr      EXP_CAS_RESTORE_MOTOR ;{{2bbd:1802}}  CAS RESTORE MOTOR 
 
 ;;=====================================================================
 ;; CAS STOP MOTOR
 
-CAS_STOP_MOTOR:                   ;{{Addr=$2bbf Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_STOP_MOTOR:                   ;{{Addr=$2bbf Code Calls/jump count: 2 Data use count: 1}}
         ld      a,$ef             ;{{2bbf:3eef}}  stop cassette motor
 
 ;;=====================================================================
@@ -1949,7 +1949,7 @@ CAS_STOP_MOTOR:                   ;{{Addr=$2bbf Code Calls/jump count: 2 Data us
 ;; - if motor was switched from on->off, do nothing
 
 ;; bit 4 of register A = cassette motor state
-CAS_RESTORE_MOTOR:                ;{{Addr=$2bc1 Code Calls/jump count: 2 Data use count: 1}}
+EXP_CAS_RESTORE_MOTOR:                ;{{Addr=$2bc1 Code Calls/jump count: 2 Data use count: 1}}
         push    bc                ;{{2bc1:c5}} 
 
         ld      b,$f6             ;{{2bc2:06f6}}  B = I/O address for PPI port C 
