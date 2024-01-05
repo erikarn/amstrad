@@ -1,0 +1,14 @@
+
+CMD_FINISH	EQU $FF
+
+; X, Y
+CMD_MOVE_ABS	EQU $01
+; X, Y
+CMD_MOVE_REL	EQU $02
+; X, Y, pen
+CMD_LINE_ABS	EQU $03
+; X, Y, pen
+CMD_LINE_REL	EQU $04
+; pen
+CMD_FILL	EQU $05
+

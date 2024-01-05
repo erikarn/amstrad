@@ -57,8 +57,17 @@ screen_mode_setup:
 	INC HL
 	RET
 
+; Set the screen origin to the middle of the screen.
+;
+screen_set_origin_middle:
+	LD DE, 320
+	LD HL, 200
+	CALL GRA_SET_ORIGIN
+	RET
 
 screen_setup:
 	call screen_mode_setup
 	call populate_ink_list
+;	call screen_set_origin_middle
 	RET
+
