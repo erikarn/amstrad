@@ -159,6 +159,7 @@ void init_header(amsdos_file *file, uint8_t type, uint16_t start, uint16_t entry
     file->header.fields.data_location = start;
     file->header.fields.logical_length = file->size;
     file->header.fields.entry_address = entry;
+    file->header.fields.first_block = 0xff;
 
     printf("Header: start=0x%x, type=%d, length=%ld, entry=0x%x\n",
         start, type, file->size, entry);
