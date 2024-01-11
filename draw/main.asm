@@ -1,4 +1,4 @@
-include "jumpblock.asm"
+include "../inc/jumpblock.inc"
 include "cmds.asm"
 
 org $8000
