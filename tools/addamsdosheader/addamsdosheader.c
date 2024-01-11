@@ -93,7 +93,7 @@ uint8_t string2filetype(const char *string) {
 
 uint16_t string2word(const char *string) {
     unsigned int word = 0;
-    sscanf(string, "%4x", &word);
+    word = strtoul(string, NULL, 0);
     return (uint16_t) word;
 }
 
@@ -194,6 +194,8 @@ int main(int argc, char **argv) {
     file_type = string2filetype(argv[ARG_FILE_TYPE]);
     start = string2word(argv[ARG_FILE_START]);
     entry = string2word(argv[ARG_FILE_ENTRY]);
+
+    printf("Entry: 0x%x, Start: 0x%x\n", entry, start);
 
     /* Check for AMSDOS header presence */
     if(has_amsdos_header(in_file)) {
