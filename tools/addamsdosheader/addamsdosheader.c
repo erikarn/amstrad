@@ -124,8 +124,8 @@ bool has_amsdos_header(const amsdos_file *file) {
 void print_usage() {
     printf("Usage: addamsdosheader <filename> <outputfile> <type> <start> <entry>\n");
     printf("- type: basic or binary\n");
-    printf("- start: hexadecimal address at which the file will be loaded\n");
-    printf("- entry: hexadecimal address of the entry point (binary)\n");
+    printf("- start: address at which the file will be loaded\n");
+    printf("- entry: address of the entry point (binary)\n");
 }
 
 void copy_string_toupper(const char *src, char *dst, int maxlen) {
@@ -153,10 +153,15 @@ void init_header(amsdos_file *file, uint8_t type, uint16_t start, uint16_t entry
     }
 
     /* Initialize file type and memory */
+    /* XXX TODO: these should really be using endian-ness things */
+
     file->header.fields.file_type = type;
     file->header.fields.data_location = start;
     file->header.fields.logical_length = file->size;
     file->header.fields.entry_address = entry;
+
+    printf("Header: start=0x%x, type=%d, length=%ld, entry=0x%x\n",
+        start, type, file->size, entry);
 
     /* Initialize file size */    
     file->header.file_length[0] = file->size & 0xFF;
